@@ -1,0 +1,78 @@
+<ng-container [formGroup]="myForm">
+
+<div class="flex flex-col mt-4" formGroupName="searchByRefOrEan">
+
+  <span class="leading-loose font-semibold">Registrar artículos</span>
+
+  <div class="flex flex-row space-x-3">
+
+    <div class="flex flex-col space-x-3 items-center">
+
+      <div class="flex flex-row space-x-3">
+
+        <input formControlName="selectedSearchRef"
+          type="radio"
+          id="referenceInputRadio"
+          name="selectedSearchRef"
+        />
+        <label for="referenceInputRadio" class="text-base">Por referencia</label>
+
+      </div>
+
+      <input formControlName="searchByRef"
+        type="text"
+        class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+        placeholder="Referencia"
+        id="inputSearchByRef"
+      />
+
+    </div>
+
+    <div class="flex flex-col space-x-3 items-center">
+
+      <div class="flex flex-row space-x-3 ">
+
+        <input formControlName="selectedSearchEan"
+          type="radio"
+          id="eanInputRadio"
+          name="selectedSearchEan"
+        />
+        <label for="eanInputRadio" class="text-base">Por EAN</label>
+
+      </div>
+
+      <input formControlName="searchByEan"
+        type="text"
+        class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+        placeholder="EAN"
+        id="inputSearchByEan"
+      />
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="flex flex-col mt-4">
+
+  <span class="leading-loose text-base font-semibold">Artículos agregados</span>
+
+  <div class="flex flex-col">
+
+    <ul>
+
+      <li class="text-sm">
+        Artículo 1
+      </li>
+      <li class="text-sm">
+        Artículo 2
+      </li>
+
+    </ul>
+
+  </div>
+
+</div>
+
+</ng-container>
