@@ -18,4 +18,8 @@ export class UserDocumentComponent implements OnInit {
     this.myForm = this.rootFormGroup.control;
   }
 
+  inputValue(){
+    console.log(this.myForm.get('userDocument')!.value);
+  }
+
 }

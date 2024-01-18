@@ -10,10 +10,11 @@
 
       <div class="flex flex-row space-x-3">
 
-        <input formControlName="selectedSearchRef"
+        <input formControlName="selectedSearchBy"
           type="radio"
           id="referenceInputRadio"
-          name="selectedSearchRef"
+          value="byRef"
+
         />
         <label for="referenceInputRadio" class="text-base">Por referencia</label>
 
@@ -24,6 +25,7 @@
         class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         placeholder="Referencia"
         id="inputSearchByRef"
+        (keyup.Enter)='getProductByRef()'
       />
 
     </div>
@@ -32,10 +34,11 @@
 
       <div class="flex flex-row space-x-3 ">
 
-        <input formControlName="selectedSearchEan"
+        <input formControlName="selectedSearchBy"
           type="radio"
           id="eanInputRadio"
-          name="selectedSearchEan"
+          value="byEan"
+
         />
         <label for="eanInputRadio" class="text-base">Por EAN</label>
 
@@ -46,6 +49,7 @@
         class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
         placeholder="EAN"
         id="inputSearchByEan"
+        (keyup.Enter)='getProductByEan()'
       />
 
     </div>
@@ -54,25 +58,6 @@
 
 </div>
 
-<div class="flex flex-col mt-4">
-
-  <span class="leading-loose text-base font-semibold">Artículos agregados</span>
-
-  <div class="flex flex-col">
-
-    <ul>
-
-      <li class="text-sm">
-        Artículo 1
-      </li>
-      <li class="text-sm">
-        Artículo 2
-      </li>
-
-    </ul>
-
-  </div>
-
-</div>
+<shopApp-view-list/>
 
 </ng-container>

@@ -11,8 +11,11 @@
     placeholder="Seleccionar tienda"
     id="selectorSelectStore"
   >
-    <option>Tienda tesoro</option>
-    <option>Tienda molinos</option>
+    <option value="" disabled selected>--Selecionar tienda--</option>
+
+    @for ( store of storesList; track store.id ) {
+      <option [value]="store.name">{{ store.name }}</option>
+    }
   </select>
 
 </div>

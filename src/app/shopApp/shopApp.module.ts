@@ -10,6 +10,7 @@ import { RegisterPageComponent } from './pages/register-page/register-page.compo
 import { SearchRefEanComponent } from './components/search-ref-ean/search-ref-ean.component';
 import { StoreSelectorComponent } from './components/store-selector/store-selector.component';
 import { UserDocumentComponent } from './components/user-document/user-document.component';
+import { ViewListComponent } from './components/view-list/view-list.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { UserDocumentComponent } from './components/user-document/user-document.
     SearchRefEanComponent,
     StoreSelectorComponent,
     UserDocumentComponent,
+    ViewListComponent,
   ],
   imports: [
     CommonModule,

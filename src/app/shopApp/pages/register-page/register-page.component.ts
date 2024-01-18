@@ -17,22 +17,25 @@ export class RegisterPageComponent {
   public myForm: FormGroup = this.fb.group({
 
     selectStore: this.fb.group({
-      selectedOption: [ 'Seleccionar tienda', [ Validators.required ] ]
+      selectedOption: [ '', Validators.required ]
     }),
     userDocument: this.fb.group({
       document: [ '', Validators.required ]
     }),
     searchByRefOrEan: this.fb.group({
-      selectedSearchRef: [ '', Validators.required ],
-      selectedSearchEan: [ '', Validators.required ],
-      searchByRef: [ '', Validators.required ],
-      searchByEan: [ '', Validators.required ]
+      selectedSearchBy: [ '', Validators.required ],
+      searchByRef:       [ '', Validators.required ],
+      searchByEan:       [ '', Validators.required ]
     }),
 
   });
 
   onSubmit(){
-    console.log( 'Formulario enviado', this.myForm.value )
+    //console.log( 'Formulario enviado', this.myForm.value )
+    // console.log(this.myForm.get('selectStore')!.get('selectedOption')!.value)
+    // console.log(this.myForm.get('userDocument')!.get('document')!.value);
+    // console.log(this.myForm.get('searchByRefOrEan')!.get('selectedSearchBy')!.value);
+    // console.log(this.myForm.get('searchByRefOrEan')!.get('searchByEan')!.value);
   }
 
 }
