@@ -5,7 +5,12 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./shopApp/shopApp.module').then(m => m.ShopAppModule)
+  },
+  {
+    path:'**',
+    redirectTo: ''
   }
+
 ];
 
 @NgModule({
