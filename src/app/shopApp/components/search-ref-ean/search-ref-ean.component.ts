@@ -1,8 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormGroup, FormGroupDirective } from '@angular/forms';
+import { map } from 'rxjs';
 
 import { GetProductsByEanService } from '../../services/get-products-byEan.service';
 import { GetProductsByRefService } from '../../services/get-products-byRef.service';
+import { ByRefResponse } from '../../interfaces';
 
 @Component({
   selector: 'shopApp-search-ref-ean',
@@ -15,12 +17,32 @@ export class SearchRefEanComponent implements OnInit {
   private byEanService = inject( GetProductsByEanService );
   private byRefService = inject( GetProductsByRefService );
 
+  //Leer copia de los productos agregados
+  public readonly listProducts: ByRefResponse[] = this.byRefService.listProductsByRef;
+
   public myForm!: FormGroup;
+
+  //Manejar estado del loader de búsqueda
+  public loader: boolean = false;
+
+  //Mostrar aviso de referencia o código incorrecto
+  public invalidRef: boolean = false;
+
+  //Manejar error de autenticacion
+  public authtenticationError: boolean = false;
+
+  //Buscar Ref a partir de un EAN
+  public eanForGetByRef: string = '';
+
+  //Mostrar aviso de referencia o código incorrecto
+  public invalidEan: boolean = false;
+
+  //Mostrar aviso de error inesperado
+  public generalError: boolean = false;
 
   constructor(
     private rootFormGroup: FormGroupDirective,
-    ){
-    }
+    ){}
 
     ngOnInit(): void {
 
@@ -28,25 +50,30 @@ export class SearchRefEanComponent implements OnInit {
       this.myForm = this.rootFormGroup.control;
 
       //Suscripción para reaccionar a los cambios ocurridos en los inputs radio
-      this.myForm.get('searchByRefOrEan')!.get('selectedSearchBy')!.valueChanges
+      this.myForm.get('searchByRefOrEan.selectedSearchBy')!.valueChanges
         .subscribe( data => this.selectRegisterBy(data) );
+
+      //De entrada aparecen desactivados los inputs de búsqueda
+      this.myForm.get('searchByRefOrEan.searchByRef')!.disable();
+      this.myForm.get('searchByRefOrEan.searchByEan')!.disable();
 
     }
 
-
-
-  //Habilitar los inputs de registro según la eleccón byRef o byEan
+  //Método para habilitar los inputs de registro según la eleccón byRef o byEan
   selectRegisterBy( word: string ): void{
 
-    const searchByRef = this.myForm.get('searchByRefOrEan')!.get('searchByRef')!;
-    const searchByEan = this.myForm.get('searchByRefOrEan')!.get('searchByEan')!;
+    const searchByRef = this.myForm.get('searchByRefOrEan.searchByRef')!;
+    const searchByEan = this.myForm.get('searchByRefOrEan.searchByEan')!;
 
     if( word === 'byRef' ){
 
       searchByRef.enable();
       searchByEan.disable();
+      searchByEan.reset();
+      this.invalidEan = false;
+      this.authtenticationError = false;
 
-      const inputRef = document.getElementById('inputSearchByRef');
+      const inputRef: HTMLElement | null = document.getElementById('inputSearchByRef');
       inputRef!.focus()
     }
 
@@ -54,6 +81,9 @@ export class SearchRefEanComponent implements OnInit {
 
       searchByEan.enable();
       searchByRef.disable();
+      searchByRef.reset();
+      this.invalidRef = false;
+      this.authtenticationError = false;
 
       const inputEan: HTMLElement | null = document.getElementById('inputSearchByEan');
       inputEan!.focus()
@@ -62,59 +92,122 @@ export class SearchRefEanComponent implements OnInit {
   }
 
   //Consultar producto por Ean
-  getProductByEan(){
+  getProductByEan( ean: string ): void{
 
-    const searchByEan = this.myForm.get('searchByRefOrEan')!.get('searchByEan')!;
+    const searchByEan = ean.trim();
 
-    //Verificar no mandar cadena vacía y debouncer
-    if( !searchByEan.value.trim() ) return;
+    //Verificar no mandar cadena vacía
+    if( !searchByEan ) return;
 
+
+    this.loader = true;
+    this.invalidEan = false;
+    this.generalError = false;
     //Acá manda al servicio el valor obtenido
-    this.byEanService.getProductByEan_Service( searchByEan.value )
-    .subscribe({
-      next: ( resp ) =>   { console.log( 'Respuesta exitosa', resp ) },
-      error: ( err ) => { console.error( 'Denegado', err ) },
-      complete: () => { console.log( 'Terminado' ) }
-    });
-    console.log( 'Petición lanzada', searchByEan.value );
+    this.byEanService.getProductByEan_Service( searchByEan )
+     .pipe(
+       map( resp => {
+        if( resp === null ) return;
 
-    //Aca espera un momento (hasta la respuesta del servicio)
-    setTimeout(() => {
-      searchByEan.reset();
-      const inputEan: HTMLElement | null = document.getElementById('inputSearchByEan');
-      if (inputEan) {
-        inputEan.focus();
-      }
-    }, 1000);
+         return resp[0].reference;
+        }),
+        )
+      .subscribe({
+        next: (ref) => {
 
-  }
+          if( ref === undefined ) {
+            this.invalidEan = true;
+            this.loader = false;
+            return
+          }
+
+          this.invalidEan = false;
+          this.loader = false;
+          this.getProductByRef( ref );
+          //Aca espera un momento (hasta la respuesta del servicio) para enfocar
+          this.myForm.get('searchByRefOrEan.searchByEan')!.reset();
+          const inputEan: HTMLElement | null = document.getElementById('inputSearchByEan');
+          if (inputEan) {
+            inputEan.focus();
+          }
+        },
+        error: (error) => {
+          // Manejar el error
+          if (error.status === 401) {
+            // Código para manejar la respuesta 401 (no autorizado)
+            this.authtenticationError = true;
+          }
+
+          this.loader = false;
+          this.invalidEan = false;
+          this.generalError = true;
+
+        },
+        complete: () => {}
+      });
+
+     console.log( 'Petición lanzada por Ean', searchByEan );
+
+  };
 
   //Consultar producto por Ref
-  getProductByRef(){
+  getProductByRef( ref: string ): void{
 
-    const searchByRef = this.myForm.get('searchByRefOrEan')!.get('searchByRef')!;
+    //Guarda el contenido del input que busca por Referencia
+    const searchByRef = ref.trim();
 
-    //Verificar no mandar cadena vacía y debouncer
-    if( !searchByRef.value.trim() ) return;
+    //Verificar no mandar cadena vacía
+    if( !searchByRef ) return;
 
-    //Acá manda al servicio el valor obtenido
-    this.byRefService.getProductByRef_Service( searchByRef.value )
+    this.generalError = false;
+    this.authtenticationError = false;
+    this.loader = true;
+    this.invalidRef = false;
+    //Manda al servicio el valor obtenido
+    this.byRefService.getProductByRef_Service( searchByRef )
     .subscribe({
-      next: ( resp ) =>   { console.log( 'Respuesta exitosa', resp ) },
-      error: ( err ) => { console.error( 'Denegado', err ) },
-      complete: () => { console.log( 'Terminado' ) }
-    });
-    console.log( 'Petición lanzada', searchByRef.value );
+      next: (resp) => {
 
-    //Aca espera un momento (hasta la respuesta del servicio)
-    setTimeout(() => {
-      searchByRef.reset();
-      const inputRef: HTMLElement | null = document.getElementById('inputSearchByRef');
-      if (inputRef) {
-        inputRef.focus();
+        if ( !resp.items  ) {
+          this.invalidRef = true;
+          this.loader = false;
+          return
+        }
+
+        this.loader = false;
+        this.invalidRef = false;
+        //Agregar la respuesta al arreglo
+        this.byRefService.listProductsByRef.unshift( resp );
+        //Aca espera un momento (hasta la respuesta) para enfocar
+        this.myForm.get('searchByRefOrEan.searchByRef')!.reset();
+        const inputRef: HTMLElement = document.getElementById('inputSearchByRef')!;
+
+        if (inputRef) {
+          inputRef.focus();
+        }
+
+      },
+      error: (error) => {
+        // Manejar el error de autenticación
+        if (error.status === 401) {
+          // Código para manejar la respuesta 401 (no autorizado)
+          console.log('Error 401: No autorizado');
+          this.authtenticationError = true;
+
+        }
+
+        this.loader = false;
+        this.invalidRef = false;
+        this.generalError = true;
+
+
+      },
+      complete: ()=>{
       }
-    }, 1000);
+    });
 
-  }
+    console.log( 'Petición lanzada por Ref', searchByRef );
+
+  };
 
 }

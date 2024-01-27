@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DetailPageComponent } from './pages/detail-page/detail-page.component';
 import { LayoutPageComponent } from './layouts/layout-page/layout-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
+import { formGuard } from './guards/form.guard';
 
 const routes: Routes = [
   {
@@ -11,7 +12,9 @@ const routes: Routes = [
     component: LayoutPageComponent,
     children:[
     { path: 'register', component: RegisterPageComponent },
-    { path: 'detail', component: DetailPageComponent },
+    { path: 'detail', component: DetailPageComponent, canActivate: [
+      formGuard
+    ] },
     { path: '**', redirectTo: 'register' },
     ]
   }

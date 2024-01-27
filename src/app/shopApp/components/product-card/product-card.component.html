@@ -1,0 +1,71 @@
+<ng-container *ngFor="let product of listProducts; let i = index">
+
+<div class="py-6 bg-gray-100 flex justify-around flex-wrap">
+
+  <div class="w-11/12 p-6 bg-white rounded-xl shadow-xl hover:shadow-2xl">
+
+    <h1 class="text-2x1 font-bold text-gray-700">{{ this.listProducts[i].items[i].name }}</h1>
+
+    <p class="text-base font-bold mt-2 text-gray-700">Tallas:</p>
+
+    <div class="flex flex-wrap justify-around p-4">
+
+      <div *ngFor="let presentationSize of getNoRepeatSize(i)"
+        class="p-2">
+        <button (click)="selectPresentationSize(i,presentationSize)"
+        class="middle none center mr-3 rounded-lg border border-indigo-500 py-3 px-6 font-sans text-xs font-bold uppercase text-indigo-500 transition-all hover:opacity-75 focus:ring focus:ring-indigo-200 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+        data-ripple-dark="true">
+          {{ presentationSize }}
+        </button>
+      </div>
+
+    </div>
+
+    <span class="text-base font-bold mt-2 text-gray-700">
+        Colores:
+    </span>
+
+    <div *ngIf="selectedSize[i]"
+      class="flex justify-around flex-wrap">
+      <div *ngFor="let ref of getPresentationSize(i, selectedSize[i])"
+        class="flex items-center">
+        <div class="flex flex-col items-center p-4">
+          <p>{{ ref.color }}</p>
+          <div class="p-1 border-4 rounded-full cursor-pointer hover:border-gray-200 hover:scale-105 transition-transform duration-200">
+            <span class="block h-6 w-6 rounded-full overflow-hidden">
+                <div class="h-full w-full bg-cover bg-center" style="background-image: url('{{ ref.swatch }}');"></div>
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <button class="text-sm block font-semibold py-3 px-2 text-white rounded-lg cursor-auto
+            {{ ref.msg.includes('No Disponible') ? 'bg-red-400' : 'bg-green-400' }}">
+            {{ ref.msg }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="flex flex-wrap justify-around">
+      <img *ngFor="let imageUrl of getImageUrls(i, selectedSize[i]); let j = index" [src]="imageUrl" alt=""
+        class="w-64 object-cover rounded-t-md p-4 shadow mb-4" />
+      <video *ngFor="let videoUrl of getVideoUrls(i, selectedSize[i]); let j = index" [src]="videoUrl" alt=""
+        class="w-64 h-80 object-cover rounded-t-md p-4 shadow mb-4">Video no disponible</video>
+    </div>
+
+    <hr>
+
+    <div class="mt-4 mb-2 flex justify-center pl-4 pr-2">
+
+      <button class="block text-xl font-semibold text-gray-700 cursor-auto">{{ this.listProducts[i].items[i].retailPrice | currency }}</button>
+
+    </div>
+
+  </div>
+
+</div>
+
+</ng-container>

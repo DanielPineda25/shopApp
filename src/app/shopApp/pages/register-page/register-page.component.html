@@ -11,7 +11,7 @@
 
       <div class="max-w-md mx-auto">
 
-        <div class="flex items-center space-x-5">
+        <div class="flex flex-wrap justify-center items-center space-x-5">
 
           <div class="h-14 w-14 bg-indigo-400 rounded-full flex flex-shrink-0 justify-center items-center text-white text-2xl font-mono">LEO</div>
 
@@ -36,13 +36,16 @@
 
           </div>
 
-          <div class="pt-4 flex items-center space-x-4">
+          <div class="pt-4 flex flex-wrap items-center space-x-4 sm:flex-nowrap">
 
-              <button class="flex justify-center items-center w-full text-gray-900 px-4 py-3 rounded-md focus:outline-none">
+              <button type="button"
+                class="flex justify-center items-center w-full text-gray-900 px-4 py-3 rounded-md focus:outline-none">
                 <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg> Cancelar
               </button>
 
-              <button type="submit"
+              <button [ngClass]="{ 'bg-gray-500': this.listProduct.length === 0 || this.myForm.invalid}"
+                [disabled]="this.listProduct.length === 0 || this.myForm.invalid"
+                type="submit"
                 class="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none" >
                 Continuar
               </button>

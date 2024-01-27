@@ -1,52 +1,61 @@
-<div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-start sm:py-6">
+@defer(){
+<div class="p-6 shadow flex flex-wrap justify-center sm:justify-between">
 
-  <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+  <div class="flex items-center space-x-5 sm:flex-row">
 
-    <form class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
+    <div class="h-14 w-14 bg-indigo-400 rounded-full flex flex-shrink-0 justify-center items-center text-white text-2xl font-mono">LEO</div>
 
-      <div class="max-w-md mx-auto">
+    <div class="flex flex-col pl-2 font-semibold text-xl text-gray-700">
 
-        <div class="flex items-center space-x-5">
+      <h2 class="leading-relaxed font-bold">Detalle de la compra</h2>
+      <p class="text-sm text-gray-500 font-normal leading-relaxed">
+        Bienvenido (a) : {{ this.currentUser?.[0]?.name }}
+      </p>
 
-          <div class="h-14 w-14 bg-indigo-400 rounded-full flex flex-shrink-0 justify-center items-center text-white text-2xl font-mono">LEO</div>
+    </div>
 
-          <div class="block pl-2 font-semibold text-xl self-start text-gray-700">
+  </div>
 
-            <h2 class="leading-relaxed font-bold">Detalle de la compra</h2>
-            <p class="text-sm text-gray-500 font-normal leading-relaxed">Verifique los detalles</p>
+  <div class="flex flex-col font-semibold text-xl text-gray-700 items-center">
 
-          </div>
-
-        </div>
-
-        <div class="divide-y divide-gray-200">
-
-          <div class="flex items-center pt-4">
-
-            <p>detail-page works!</p>
-
-          </div>
-
-          <div class="mt-4 pt-4 flex items-center space-x-4">
-
-            <button [routerLink]="'/register'"
-              class="flex justify-center items-center w-full text-gray-900 px-4 py-3 rounded-md focus:outline-none">
-              <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg> Regresar
-            </button>
-
-            <button class="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none" >
-              Continuar
-            </button>
-
-        </div>
-
-        </div>
-
-
-      </div>
-
-    </form>
+    <h2 class="text-m leading-relaxed font-bold">Tienda actual:</h2>
+    <p class="text-sm text-gray-500 font-normal leading-relaxed">{{ this.storeSelected }}</p>
 
   </div>
 
 </div>
+
+<!--Tarjeta muestra del producto-->
+<shopApp-product-card/>
+<!-- Termina tarjeta -->
+
+<div class="shadow bg-white">
+
+    <div class="p-6 flex justify-between items-center space-x-4 flex flex-wrap sm:flex-nowrap">
+
+      <button [routerLink]="'/register'"
+        class="flex justify-center items-center w-full text-gray-900 px-4 py-3 rounded-md focus:outline-none">
+        <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg> Regresar
+      </button>
+
+      <button (click)="onSubmit()"
+        class="bg-blue-500 flex shadow justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none" >
+        Continuar
+      </button>
+
+    </div>
+
+</div>
+} @placeholder {
+
+  <p>Cargando...</p>
+  <div class="flex justify-center mt-4">
+
+  <div class="flex space-x-2 animate-pulse">
+      <div class="w-3 h-3 bg-gray-500 rounded-full"></div>
+      <div class="w-3 h-3 bg-gray-500 rounded-full"></div>
+      <div class="w-3 h-3 bg-gray-500 rounded-full"></div>
+  </div>
+
+</div>
+}

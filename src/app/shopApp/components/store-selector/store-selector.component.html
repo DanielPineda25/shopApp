@@ -7,9 +7,10 @@
     Seleccionar tienda
   </label>
   <select  formControlName="selectedOption"
-    class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-    placeholder="Seleccionar tienda"
-    id="selectorSelectStore"
+  class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+  placeholder="Seleccionar tienda"
+  id="selectorSelectStore"
+  (change)="onStoreSelected()"
   >
     <option value="" disabled selected>--Selecionar tienda--</option>
 
@@ -17,6 +18,10 @@
       <option [value]="store.name">{{ store.name }}</option>
     }
   </select>
+  <span *ngIf="myForm.get('selectStore.selectedOption')?.getError('required') && myForm.get('selectStore.selectedOption')?.touched"
+    class="text-sm text-red-600">
+    Seleccione una tienda.
+  </span>
 
 </div>
 

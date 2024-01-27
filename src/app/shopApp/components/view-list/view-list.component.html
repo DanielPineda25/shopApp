@@ -6,12 +6,32 @@
 
     <ul>
 
-      <li class="text-sm">
-        Artículo 1
-      </li>
-      <li class="text-sm">
-        Artículo 2
-      </li>
+      @for (item of productsList; track $index) {
+
+        <li class="text-sm mt-2" >
+
+
+            <div class="w- p-2 bg-white rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all transform duration-500">
+
+                <h2
+                  class="text-sm font-bold text-gray-700">
+                  {{ item.items[0].name }}
+                </h2>
+
+                <span
+                  class="block text-sm font-semibold text-gray-700 cursor-auto">
+                  {{ item.items[0].retailPrice | currency }}
+                </span>
+
+            </div>
+
+        </li>
+
+      }@empty{
+        <li class="text-sm mt-2" >
+          No hay productos agregados.
+        </li>
+      }
 
     </ul>
 

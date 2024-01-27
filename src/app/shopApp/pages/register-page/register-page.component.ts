@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
-import { CheckboxControlValueAccessor, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { GetProductsByRefService } from '../../services/get-products-byRef.service';
+import { ByRefResponse } from '../../interfaces';
 
 @Component({
   selector: 'shopApp-register-page',
@@ -8,34 +12,41 @@ import { CheckboxControlValueAccessor, FormBuilder, FormGroup, Validators } from
 })
 export class RegisterPageComponent {
 
+  //Inyectamos el servicio para saber cuantos productos hay agregados
+  private productsService = inject( GetProductsByRefService );
+
+  //Leemos la lista de productos agregados que hay en el servicio
+  public readonly listProduct: ByRefResponse[] = this.productsService.listProductsByRef;
+
   //injectamos el formBuilder
   constructor(
     private fb: FormBuilder,
+    private router: Router,
   ){}
 
-  //Crear formulario reactivo con los grupos de inputs
+  //Crear formulario reactivo con los grupos de inputs y validaciones síncronas
   public myForm: FormGroup = this.fb.group({
 
     selectStore: this.fb.group({
       selectedOption: [ '', Validators.required ]
     }),
     userDocument: this.fb.group({
-      document: [ '', Validators.required ]
+      document: [ '', [ Validators.required, Validators.minLength(8) ] ]
     }),
     searchByRefOrEan: this.fb.group({
-      selectedSearchBy: [ '', Validators.required ],
-      searchByRef:       [ '', Validators.required ],
-      searchByEan:       [ '', Validators.required ]
+      selectedSearchBy: [ '',  ],
+      searchByRef:       [ '', ],
+      searchByEan:       [ '', ]
     }),
 
   });
 
-  onSubmit(){
-    //console.log( 'Formulario enviado', this.myForm.value )
-    // console.log(this.myForm.get('selectStore')!.get('selectedOption')!.value)
-    // console.log(this.myForm.get('userDocument')!.get('document')!.value);
-    // console.log(this.myForm.get('searchByRefOrEan')!.get('selectedSearchBy')!.value);
-    // console.log(this.myForm.get('searchByRefOrEan')!.get('searchByEan')!.value);
+  onSubmit(): void{
+
+    if ( this.myForm.invalid || this.listProduct.length === 0 ) return
+
+    this.router.navigateByUrl('/detail');
+
   }
 
 }

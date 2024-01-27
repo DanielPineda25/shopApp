@@ -11,7 +11,14 @@
     class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
     placeholder="Ingrese número de documento"
     id="inputDocumentUser"
+    (change)='getUserByDocument()'
+    (keydown.Enter)='$event.preventDefault()'
     >
+    <span class="text-sm text-red-600"
+      *ngIf="myForm.get('userDocument.document')?.touched">
+      {{ myForm.get('userDocument.document')?.getError('required') ? 'Ingrese un documento válido.' : '' }}
+      {{ myForm.get('userDocument.document')?.getError('minlength') ? 'Se requieren mínimo 8 dígitos.' : '' }}
+    </span>
 
   </div>
 

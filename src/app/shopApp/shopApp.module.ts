@@ -6,6 +6,7 @@ import { ShopAppRoutingModule } from './shopApp-routing.module';
 
 import { DetailPageComponent } from './pages/detail-page/detail-page.component';
 import { LayoutPageComponent } from './layouts/layout-page/layout-page.component';
+import { ProductCardComponent } from './components/product-card/product-card.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 import { SearchRefEanComponent } from './components/search-ref-ean/search-ref-ean.component';
 import { StoreSelectorComponent } from './components/store-selector/store-selector.component';
@@ -16,6 +17,7 @@ import { ViewListComponent } from './components/view-list/view-list.component';
   declarations: [
     DetailPageComponent,
     LayoutPageComponent,
+    ProductCardComponent,
     RegisterPageComponent,
     SearchRefEanComponent,
     StoreSelectorComponent,

@@ -13,11 +13,14 @@ export class GetProductsByRefService {
   //Utilizando la url desde las variables de entorno
   private readonly baseUrl: string = environment.baseUrlByRef;
 
+  //Guarda todo el objeto completo del articulo buscado por REF
+  public listProductsByRef: ByRefResponse[] = [];
+
   constructor(
     private http: HttpClient
   ) { }
 
-  //Nuestro método de búsqueda por Ref. Nos devolverá un observable con la respuesta que tiene su determinada interfaz
+  //Método de consulta por Referencia
   getProductByRef_Service( refCode: string ): Observable<ByRefResponse>{
 
     //definir cuerpo de la solicitud

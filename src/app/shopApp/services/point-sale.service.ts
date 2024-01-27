@@ -6,6 +6,9 @@ import { PointSale } from '../interfaces/point-sale.interface';
 })
 export class PointSaleService {
 
+  //Manejar la selección de la tienda
+  public storeSelected?: PointSale;
+
   constructor() { }
 
   public get stores(): PointSale[]{
