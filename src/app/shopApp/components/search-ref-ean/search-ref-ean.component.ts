@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { FormGroup, FormGroupDirective } from '@angular/forms';
 import { map } from 'rxjs';
 
@@ -12,6 +12,13 @@ import { ByRefResponse } from '../../interfaces';
   styleUrl: './search-ref-ean.component.css'
 })
 export class SearchRefEanComponent implements OnInit {
+
+  //Manejar los inputs directamente
+  @ViewChild('inputSearchByRef')
+  public inputSearchByRef!: ElementRef<HTMLInputElement>;
+
+  @ViewChild('inputSearchByEan')
+  public inputSearchByEan!: ElementRef<HTMLInputElement>;
 
   //Inyección de los servicios que vamos a utilizar para búsqueda por Ean y Ref
   private byEanService = inject( GetProductsByEanService );
@@ -72,9 +79,8 @@ export class SearchRefEanComponent implements OnInit {
       searchByEan.reset();
       this.invalidEan = false;
       this.authtenticationError = false;
+      this.inputSearchByRef.nativeElement.focus();
 
-      const inputRef: HTMLElement | null = document.getElementById('inputSearchByRef');
-      inputRef!.focus()
     }
 
     if( word === 'byEan' ){
@@ -84,9 +90,7 @@ export class SearchRefEanComponent implements OnInit {
       searchByRef.reset();
       this.invalidRef = false;
       this.authtenticationError = false;
-
-      const inputEan: HTMLElement | null = document.getElementById('inputSearchByEan');
-      inputEan!.focus()
+      this.inputSearchByEan.nativeElement.focus();
     }
 
   }
@@ -126,10 +130,7 @@ export class SearchRefEanComponent implements OnInit {
           this.getProductByRef( ref );
           //Aca espera un momento (hasta la respuesta del servicio) para enfocar
           this.myForm.get('searchByRefOrEan.searchByEan')!.reset();
-          const inputEan: HTMLElement | null = document.getElementById('inputSearchByEan');
-          if (inputEan) {
-            inputEan.focus();
-          }
+          this.inputSearchByEan.nativeElement.focus();
         },
         error: (error) => {
           // Manejar el error
@@ -180,11 +181,7 @@ export class SearchRefEanComponent implements OnInit {
         this.byRefService.listProductsByRef.unshift( resp );
         //Aca espera un momento (hasta la respuesta) para enfocar
         this.myForm.get('searchByRefOrEan.searchByRef')!.reset();
-        const inputRef: HTMLElement = document.getElementById('inputSearchByRef')!;
-
-        if (inputRef) {
-          inputRef.focus();
-        }
+        this.inputSearchByRef.nativeElement.focus();
 
       },
       error: (error) => {

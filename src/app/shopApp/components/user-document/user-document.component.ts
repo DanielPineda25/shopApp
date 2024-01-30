@@ -39,9 +39,16 @@ export class UserDocumentComponent implements OnInit {
     this.getUserService.currentDocument = userDocument;
     //Manda al servicio el valor recibido
     this.getUserService.getUserByDocument_Service( userDocument )
-    .subscribe( resp => {
-      //Manejamos la información del usuario obtenido, en el servicio
-      this.getUserService.currentUser = resp;
+    .subscribe({
+      next: ( resp ) =>{
+        //Manejamos la información del usuario obtenido, en el servicio
+        this.getUserService.currentUser = resp;
+
+      },
+      error: ( err ) => {
+
+        console.log('Error inesperado', err)
+      }
     });
 
   }

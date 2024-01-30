@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
 import { HeadersInterceptor } from '../interceptors/headers.interceptor';
 
 @NgModule({
@@ -11,8 +11,8 @@ import { HeadersInterceptor } from '../interceptors/headers.interceptor';
     AppComponent,
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
+    BrowserModule,
     HttpClientModule,
   ],
   providers: [
@@ -21,3 +21,4 @@ import { HeadersInterceptor } from '../interceptors/headers.interceptor';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

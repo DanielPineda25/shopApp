@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../../environments/environments';
 import { ByEanResponse } from '../interfaces';
 
 @Injectable({
@@ -10,8 +9,8 @@ import { ByEanResponse } from '../interfaces';
 })
 export class GetProductsByEanService {
 
-  //Utilizando la url desde las variables de entorno
-  private readonly baseUrl: string = environment.baseUrlByEan;
+  //Url para hacer las peticiones por ean
+  private baseUrl: string = 'https://srvextranet.leonisa.com/Aplicativos_Informaticos/posservice/api/price/public';
 
   constructor(
     private http: HttpClient

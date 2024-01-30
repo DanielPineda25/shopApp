@@ -46,7 +46,6 @@ export class ProductCardComponent implements OnInit {
     return filteredVideos;
   }
 
-
   //Obtener valores sin repetir talla
   getNoRepeatSize(i: number): string[] {
 
@@ -74,7 +73,5 @@ export class ProductCardComponent implements OnInit {
   selectPresentationSize(i: number, presentationSize: string): void {
     this.selectedSize[i] = presentationSize;
   }
-
-
 
 }

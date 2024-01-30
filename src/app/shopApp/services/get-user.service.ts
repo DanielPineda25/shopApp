@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../../environments/environments';
 import { UserResponse } from '../interfaces';
 
 @Injectable({
@@ -13,8 +12,8 @@ export class GetUserService {
   //Manejar código del país aparte
   private countriesCode: string = '169'
 
-  //Utilizando la url desde las variables de entorno
-  private readonly baseUrl: string = environment.baseUrlUser;
+  //Url para hacer las peticiones de usuario por documento
+  private baseUrl: string = 'https://leonisavirtual.leonisa.com/winpos-service/service/client/collect';
 
   //Manejar el valor actual desde el servicio
   public currentUser?: UserResponse[];

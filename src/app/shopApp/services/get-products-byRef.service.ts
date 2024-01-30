@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../../environments/environments';
 import { ByRefResponse } from '../interfaces';
 
 @Injectable({
@@ -10,8 +9,8 @@ import { ByRefResponse } from '../interfaces';
 })
 export class GetProductsByRefService {
 
-  //Utilizando la url desde las variables de entorno
-  private readonly baseUrl: string = environment.baseUrlByRef;
+  //Url para hacer las peticiones por referencia
+  private baseUrl: string = 'https://srvextranet.leonisa.com/Aplicativos_Informaticos/posservice/api/inventory/getInventories';
 
   //Guarda todo el objeto completo del articulo buscado por REF
   public listProductsByRef: ByRefResponse[] = [];
